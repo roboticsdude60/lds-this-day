@@ -12,8 +12,8 @@ export const eventRouter = router({
         console.log(input.tags);
         const r = await ctx.prisma.interestingEvent.create({ data: {
             date: input.date, 
-            month: input.date.getUTCMonth(),
-            day: input.date.getUTCDay(),
+            month: input.date.getUTCMonth() + 1,
+            day: input.date.getUTCDate(),
             title: input.title,
             description: input.description,
         } });
