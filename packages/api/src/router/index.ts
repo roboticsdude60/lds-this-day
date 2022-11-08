@@ -1,5 +1,5 @@
 import { router } from "../trpc";
-import { postRouter } from "./post";
+// import { postRouter } from "./post";
 import { authRouter } from "./auth";
 import { eventRouter } from "./event";
 
