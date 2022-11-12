@@ -21,9 +21,9 @@ const EventRow: React.FC<{
         selectEvent(event);
       }}
     >
-      <td className="border px-2">{event.date.toLocaleDateString(undefined, { dateStyle: 'medium' })}</td>
-      <td className="border px-2">{event.title}</td>
-      <td className="border px-2">{event.description}</td>
+      <td className="border px-2 max-w-prose w-32">{event.date.toLocaleDateString(undefined, { dateStyle: 'medium' })}</td>
+      <td className="border px-2 max-w-prose ">{event.title}</td>
+      <td className="border px-2 max-w-prose ">{event.description}</td>
     </tr>
   );
 }
@@ -40,11 +40,13 @@ const Home: NextPage = () => {
   const addEvent = trpc.event.create.useMutation({
     onSuccess() {
       eventsQuery.refetch();
+      clearForm();
     },
   });
   const updateEvent = trpc.event.patchById.useMutation({
     onSuccess() {
       eventsQuery.refetch();
+      clearForm();
     },
   });
   const deleteEvent = trpc.event.deleteById.useMutation({
@@ -85,8 +87,6 @@ const Home: NextPage = () => {
               if (eventId) {
                 updateEvent.mutate({ id: eventId, date: new Date(date), title, description, tags: [] });
               } else addEvent.mutate({ date: new Date(date), title, description, tags: [] });
-
-              clearForm();
             }}
           >
             <label className="flex">
@@ -116,10 +116,10 @@ const Home: NextPage = () => {
 
         <table className="w-full ">
           <thead className="">
-            <tr className=" border border-slate-500 bg-white">
-              <th className="sticky top-0 pl-2 border text-start">Date</th>
-              <th className="sticky top-0 pl-2 border text-start">Title</th>
-              <th className="sticky top-0 pl-2 border text-start">Description</th>
+            <tr className="border border-slate-500 ">
+              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Date</th>
+              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Title</th>
+              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Description</th>
             </tr>
           </thead>
 

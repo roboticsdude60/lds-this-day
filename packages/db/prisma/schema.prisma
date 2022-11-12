@@ -10,11 +10,6 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-// model Post {
-//     id      String @id @default(cuid())
-//     title   String
-//     content String
-// }
 
 // NextAuth.js Models
 // NOTE: When using postgresql, mysql or sqlserver, 
@@ -72,10 +67,10 @@ model Tag {
 
 model InterestingEvent {
     id           String   @id @default(cuid())
-    date DateTime
+    date DateTime @db.Date()
     month Int
     day Int
-    title   String 
-    description String
+    title   String @db.TinyText()
+    description String @db.Text()
     tags Tag[] 
 }
