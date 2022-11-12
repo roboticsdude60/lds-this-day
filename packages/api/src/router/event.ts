@@ -7,6 +7,7 @@ export const eventRouter = router({
       orderBy: [{ month: "asc" }, { day: "asc" }],
     });
   }),
+
   create: publicProcedure
     .input(
       z.object({
@@ -31,6 +32,34 @@ export const eventRouter = router({
       console.log(r);
       return r;
     }),
+
+  patchById: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        date: z.date(),
+        title: z.string(),
+        description: z.string(),
+        tags: z.array(z.string()),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      console.log("herew++++++++++++++++++");
+      console.log(input.tags);
+      const r = await ctx.prisma.interestingEvent.update({
+        where: { id: input.id },
+        data: {
+          date: input.date,
+          month: input.date.getUTCMonth() + 1,
+          day: input.date.getUTCDate(),
+          title: input.title,
+          description: input.description,
+        },
+      });
+      console.log(r);
+      return r;
+    }),
+
   deleteById: publicProcedure
     .input(z.string())
     .mutation(async ({ ctx, input }) => {

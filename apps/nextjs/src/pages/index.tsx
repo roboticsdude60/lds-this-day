@@ -6,33 +6,22 @@ import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { useState } from "react";
 
-// const PostCard: React.FC<{
-//   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
-// }> = ({ post }) => {
-//   return (
-//     <div className="p-4 border-2 border-gray-500 rounded-lg max-w-2xl hover:scale-[101%] transition-all">
-//       <h2 className="text-2xl font-bold text-gray-800">{post.title}</h2>
-//       <p className="text-gray-600">{post.content}</p>
-//     </div>
-//   );
-// };
+type InterestingEvent = inferProcedureOutput<AppRouter["event"]["all"]>[number];
 
 const EventRow: React.FC<{
-  event: inferProcedureOutput<AppRouter["event"]["all"]>[number];
+  event: InterestingEvent;
   selected: boolean;
-  selectEvent: (eventId: string) => void;
+  selectEvent: (event: InterestingEvent) => void;
 }> = ({ event, selected, selectEvent }) => {
-  let date = event.date.toUTCString();
-  date = date.substring(0, date.length - 13);
   return (
     <tr
       className={`table-row border  border-separate ${!selected && "hover:bg-slate-200"} ${selected && "bg-slate-300 hover:bg-slate-400"}`}
       onClick={(e) => {
         e.preventDefault();
-        selectEvent(event.id);
+        selectEvent(event);
       }}
     >
-      <td className="border px-2">{date}</td>
+      <td className="border px-2">{event.date.toLocaleDateString(undefined, { dateStyle: 'medium' })}</td>
       <td className="border px-2">{event.title}</td>
       <td className="border px-2">{event.description}</td>
     </tr>
@@ -40,15 +29,20 @@ const EventRow: React.FC<{
 }
 
 const Home: NextPage = () => {
-  // const postQuery = trpc.post.all.useQuery();
-  const eventsQuery = trpc.event.all.useQuery();
-  const [selectedEvent, setSelectedEvent] = useState('');
+  const [selectedEvent, setSelectedEvent] = useState<InterestingEvent>();
 
-  const [date, setDate] = useState<string | undefined>('');
-  const [title, setTitle] = useState('');
+  const [eventId, setEventId] = useState<string>('');
+  const [date, setDate] = useState<string>('');
+  const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
 
+  const eventsQuery = trpc.event.all.useQuery();
   const addEvent = trpc.event.create.useMutation({
+    onSuccess() {
+      eventsQuery.refetch();
+    },
+  });
+  const updateEvent = trpc.event.patchById.useMutation({
     onSuccess() {
       eventsQuery.refetch();
     },
@@ -58,6 +52,13 @@ const Home: NextPage = () => {
       eventsQuery.refetch();
     },
   });
+
+  function clearForm() {
+    setEventId('');
+    setDescription('');
+    setTitle('');
+    setDate('');
+  }
 
 
 
@@ -79,28 +80,36 @@ const Home: NextPage = () => {
           <form className="flex gap-2 flex-col"
             onSubmit={(e) => {
               e.preventDefault();
-              if (!date) return;
-              addEvent.mutate({ date: new Date(date,), description, tags: [], title });
-              setDescription('');
-              setTitle('');
-              setDate('');
+              if (!date || !title) return;
+
+              if (eventId) {
+                updateEvent.mutate({ id: eventId, date: new Date(date), title, description, tags: [] });
+              } else addEvent.mutate({ date: new Date(date), title, description, tags: [] });
+
+              clearForm();
             }}
           >
-            <div className="flex">
-              <label className="w-12">Date</label>
+            <label className="flex">
+              <span className="w-12">Date</span>
               <input value={date} onChange={(event) => setDate(event.target.value)}
                 className="border border-b-2" type="date" />
-            </div>
-            <div className="flex">
-              <label className="w-12">Title</label>
+            </label>
+            <label className="flex">
+              <span className="w-12">Title</span>
               <input value={title} onChange={(event) => setTitle(event.target.value)} id="titleField" className="flex-1 border border-b-2" type="text" />
+            </label>
+            <label className="flex flex-col">
+              <span>Description</span>
+              <textarea rows={3}
+                value={description} onChange={(event) => setDescription(event.target.value)} className="mycool block border border-b-2" />
+            </label>
+            <div className="flex gap-4">
+              <button type="submit"
+                className=" my-4 w-20 px-2 p-1 border bg-green-400">Save</button>
+              {eventId && <button onClick={clearForm}
+                className="my-4 w-20 px-2 p-1 border bg-red-400">Cancel</button>}
             </div>
-            <div className="flex flex-col">
-              <label>Description</label>
-              <textarea value={description} onChange={(event) => setDescription(event.target.value)} className="flex-1 border border-b-2 m-1 " />
-            </div>
-            <button type="submit"
-              className="my-4 w-20 px-2 p-1 border bg-green-400">Save</button>
+
           </form>
         </div>
 
@@ -118,11 +127,11 @@ const Home: NextPage = () => {
           <tbody className="border border-1 border-collapse border-gray h-[20vh] overflow-y-scroll">
             {eventsQuery.data?.map((event) => {
               return (
-                <EventRow key={event.id} event={event} selected={event.id === selectedEvent}
-                  selectEvent={(eventId) => {
-                    if (eventId === selectedEvent) {
-                      setSelectedEvent('');
-                    } else setSelectedEvent(eventId);
+                <EventRow key={event.id} event={event} selected={event === selectedEvent}
+                  selectEvent={(event) => {
+                    if (event === selectedEvent) {
+                      setSelectedEvent(undefined);
+                    } else setSelectedEvent(event);
                   }}
                 />
               );
@@ -131,33 +140,23 @@ const Home: NextPage = () => {
         </table>
 
 
-        {selectedEvent && <div className="py-4 w-full bg-white flex gap-4 sticky bottom-0">
-          <button className="w-20 bg-yellow-200 border">Edit (TODO)</button>
-          <button className="w-20 bg-red-400" onClick={() => {
-            deleteEvent.mutate(selectedEvent);
-          }}>Delete</button>
-        </div>}
-      </main>
-
-
-      {/* <main className="container flex flex-col items-center min-h-screen py-16 mx-auto">
-        <h1 className="text-8xl md:text-[5rem] leading-normal font-extrabold text-gray-700">
-          Create <span className="text-indigo-500">T3</span> Turbo
-        </h1>
-        <AuthShowcase />
-
-        <div className="flex items-center justify-center w-full pt-6 text-2xl text-blue-500">
-          {postQuery.data ? (
-            <div className="flex flex-col gap-4">
-              {postQuery.data?.map((p) => {
-                return <PostCard key={p.id} post={p} />;
-              })}
-            </div>
-          ) : (
-            <p>Loading..</p>
-          )}
-        </div>
-      </main> */}
+        {
+          selectedEvent && <div className="py-4 w-full bg-white flex gap-4 sticky bottom-0">
+            <button className="w-20 bg-yellow-200 border"
+              onClick={() => {
+                if (!selectedEvent) return;
+                setEventId(selectedEvent.id);
+                setDate(selectedEvent.date.toISOString().split("T")[0] ?? '');
+                setTitle(selectedEvent.title);
+                setDescription(selectedEvent.description);
+                window.scrollTo(0, 0);
+              }}>Edit</button>
+            <button className="w-20 bg-red-400" onClick={() => {
+              deleteEvent.mutate(selectedEvent.id);
+            }}>Delete</button>
+          </div>
+        }
+      </main >
     </>
   );
 };
