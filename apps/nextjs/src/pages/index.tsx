@@ -21,7 +21,7 @@ const EventRow: React.FC<{
         selectEvent(event);
       }}
     >
-      <td className="border px-2 max-w-prose w-32">{event.date.toLocaleDateString(undefined, { dateStyle: 'medium' })}</td>
+      <td className="border px-2 max-w-prose w-28">{event.date.toUTCString().split('00:00:00')[0]?.slice(5)}</td>
       <td className="border px-2 max-w-prose ">{event.title}</td>
       <td className="border px-2 max-w-prose ">{event.description}</td>
     </tr>
