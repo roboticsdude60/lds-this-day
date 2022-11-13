@@ -8,6 +8,24 @@ export const eventRouter = router({
     });
   }),
 
+  filtered: publicProcedure
+    .input(
+      z.object({
+        month: z.number(),
+        day: z.number(),
+      })
+    )
+    .query(({ ctx, input }) => {
+      let where = {};
+      if (input.month) Object.assign(where, { month: input.month });
+      if (input.day) Object.assign(where, { day: input.day });
+
+      return ctx.prisma.interestingEvent.findMany({
+        where,
+        orderBy: [{ month: "asc" }, { day: "asc" }],
+      });
+    }),
+
   create: publicProcedure
     .input(
       z.object({

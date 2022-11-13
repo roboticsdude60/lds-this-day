@@ -36,7 +36,10 @@ const Home: NextPage = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
 
-  const eventsQuery = trpc.event.all.useQuery();
+  const [filterMonth, setFilterMonth] = useState(0);
+  const [filterDay, setFilteredDay] = useState(0);
+
+  const eventsQuery = trpc.event.filtered.useQuery({ month: filterMonth, day: filterDay });
   const addEvent = trpc.event.create.useMutation({
     onSuccess() {
       eventsQuery.refetch();
@@ -108,6 +111,32 @@ const Home: NextPage = () => {
                 className=" my-4 w-20 px-2 p-1 border bg-green-400">Save</button>
               {eventId && <button onClick={clearForm}
                 className="my-4 w-20 px-2 p-1 border bg-red-400">Cancel</button>}
+
+              <label className="flex flex-col align-middle my-4 ml-auto">
+                <span>Filter Month</span>
+                <select value={filterMonth} name='monthFilter' id="monthFilter" onChange={(event) => setFilterMonth(Number(event.target.value))}>
+                  <option value="0">None</option>
+                  <option value="1">January</option>
+                  <option value="2">Febuary</option>
+                  <option value="3">March</option>
+                  <option value="4">April</option>
+                  <option value="5">May</option>
+                  <option value="6">June</option>
+                  <option value="7">July</option>
+                  <option value="8">August</option>
+                  <option value="9">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+
+                </select>
+              </label>
+              <label className="flex flex-col my-4">
+                <span>Day</span>
+                <select value={filterDay} onChange={(e) => setFilteredDay(Number(e.target.value))}>
+                  {Array.from(Array(32).keys()).map(i => <option key={i} value={i}>{i || 'None'}</option>)}
+                </select>
+              </label>
             </div>
 
           </form>
