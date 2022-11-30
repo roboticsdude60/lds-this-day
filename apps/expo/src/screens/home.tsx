@@ -17,12 +17,22 @@ import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 
 import { trpc } from "../utils/trpc";
+import { Picker } from "@react-native-picker/picker";
+
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import { FlashList } from "@shopify/flash-list";
+
+// import 'intl';
+// import { DateTimeFormat } from 'intl';
+// import { getDaysInMonth } from "date-fns";
+// import '@formatjs/intl-datetimeformat/polyfill'
+// import '@formatjs/intl-datetimeformat/locale-data/en' // locale-data for en
+// import '@formatjs/intl-datetimeformat/add-all-tz' // Add ALL tz data
 // import { Picker } from "@react-native-picker/picker";
 
 type InterestingEvent = inferProcedureOutput<AppRouter["event"]["all"]>[number];
 
-const MonthNames = ["January"];
-
+// const MonthNames = ["January"];
 
 // const PostCard: React.FC<{
 //   post: inferProcedureOutput<AppRouter["post"]["all"]>[number];
@@ -73,59 +83,81 @@ const MonthNames = ["January"];
 //   );
 // };
 
+const getDaysInMonth = (date: Date) => {
+  var lastDayOfMonth = new Date(0);
+  lastDayOfMonth.setFullYear(date.getFullYear(), date.getMonth() + 1, 0);
+  lastDayOfMonth.setHours(0, 0, 0, 0);
+  return lastDayOfMonth.getDate();
+}
+
+const getMonthName = (month: number) => {
+  const names = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  return names[month];
+}
 
 export const HomeScreen = () => {
   // const postQuery = trpc.post.all.useQuery();
   const [showPost, setShowPost] = React.useState<string | null>(null);
   const today = new Date();
-  const [date, setDate] = useState(today);
   const [pickingDate, setPickingDate] = useState(false);
-  // const [month, setMonth] = useState(today.toLocaleDateString('en-us', { month: "" }));
-  // const [day, setDay] = useState(today.getDate());
+  const [month, setMonth] = useState(today.getMonth());
+  const [day, setDay] = useState(today.getDate());
 
-  const eventsQuery = trpc.event.filtered.useQuery({ month: date.getMonth(), day: date.getDate() });
+  const eventsQuery = trpc.event.filtered.useQuery({ month, day });
+  // const eventsQuery = trpc.event.filtered.useQuery({ month: filterMonth, day: filterDay });
 
 
   return (
-    <SafeAreaView>
-      <View className="h-full w-full p-4">
+    <SafeAreaView >
+      <View className="h-full w-full p-4 mt-6">
         <Text className="text-2xl font-bold mx-auto pb-2">
           This day in Church History
         </Text>
 
         <View className="mx-16 border-2 rounded-3xl text-blue-400">
-          <Button onPress={() => setPickingDate(!pickingDate)} title={`${date.toLocaleDateString('en-us', { month: "long" })} ${date.getDate()}`} />
+          <Button onPress={() => setPickingDate(!pickingDate)} title={`${getMonthName(month)} ${day}`} />
         </View>
-        <Modal visible={pickingDate}>
+
+        <View>
+          <DateTimePickerModal
+            isVisible={pickingDate}
+            mode="date"
+            onConfirm={(date: Date) => {
+              setMonth(date.getMonth());
+              setDay(date.getDate());
+              setPickingDate(false);
+            }}
+            onCancel={() => { setPickingDate(false) }}
+          />
+        </View>
+
+        {/* <Modal visible={false}>
           <SafeAreaView className="">
             <Button onPress={() => setPickingDate(false)} title="Dismiss" />
-            {/* <Picker selectedValue={date.getMonth()}>
-              {Array.from(Array(31).keys()).map(i => <Picker.Item label={`${i + 1}`} />)}
+            <Text className="text-center text-sm">Month</Text>
+            <Picker
+              selectedValue={month}
+              onValueChange={(val, index) => {
+                setMonth(val);
+              }}
+            >
+              {Array.from(Array(12).keys()).map(i => <Picker.Item key={i + 1} label={`${getMonthName(i)}`} value={`${i}`} />)}
+            </Picker>
 
-            </Picker> */}
-
-            <View className="flex flex-row">
-              <ScrollView>
-                <Button title="HEy" />
-              </ScrollView>
-              <ScrollView className="border-r-4">
-                {/* {Array.from(Array(31).keys()).map(i =>
-                  <Button title={`${i + 1}`} onPress={() => {
-                    let newDate = new Date(date);
-                    newDate.setDate(i + 1);
-                    setDate(newDate);
-                    setPickingDate(false);
-                  }} />
-                )} */}
-              </ScrollView>
-            </View>
-
-            {/* <RNDate */}
-            {/* <RNDateTimePicker value={date} mode="date" /> */}
+            <Text className="text-center text-sm">Day</Text>
+            <Picker
+              selectedValue={day}
+              onValueChange={(val, index) => {
+                setDay(val);
+              }}
+            >
+              {Array.from(Array(getDaysInMonth(new Date(today.getFullYear(), month))).keys()).map(i => <Picker.Item key={i + 1} label={`${i + 1}`} value={`${i + 1}`} />)}
+              // {/* {Array.from(Array(31).keys()).map(i => <Picker.Item key={i + 1} label={`${i + 1}`} value={`${i + 1}`} />)} }
+            </Picker>
 
           </SafeAreaView>
 
-        </Modal>
+        </Modal> */}
 
         <ScrollView>
 
@@ -140,6 +172,14 @@ export const HomeScreen = () => {
             <Text className="italic font-semibold">Press on a post</Text>
           )}
         </View>
+        <View>
+          <Text>{eventsQuery.error?.message}</Text>
+        </View>
+        <FlashList
+          data={eventsQuery.data}
+          estimatedItemSize={5}
+          renderItem={(interestingEvent) => (<TouchableOpacity><Text>{interestingEvent.item.description}</Text></TouchableOpacity>)}
+        />
 
         {/* <FlashList
           data={postQuery.data}
