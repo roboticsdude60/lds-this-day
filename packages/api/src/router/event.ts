@@ -4,7 +4,7 @@ import { z } from "zod";
 export const eventRouter = router({
   all: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.interestingEvent.findMany({
-      orderBy: [{ month: "asc" }, { day: "asc" }],
+      orderBy: [{ month: "asc" }, { day: "asc" }, { date: "asc" }],
     });
   }),
 
@@ -22,7 +22,7 @@ export const eventRouter = router({
 
       return ctx.prisma.interestingEvent.findMany({
         where,
-        orderBy: [{ month: "asc" }, { day: "asc" }],
+        orderBy: [{ month: "asc" }, { day: "asc" }, { date: "asc" }],
       });
     }),
 
