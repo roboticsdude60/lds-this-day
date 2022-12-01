@@ -21,9 +21,9 @@ const EventRow: React.FC<{
         selectEvent(event);
       }}
     >
-      <td className="border px-2 max-w-prose w-28">{event.date.toUTCString().split('00:00:00')[0]?.slice(5)}</td>
-      <td className="border px-2 max-w-prose ">{event.title}</td>
-      <td className="border px-2 max-w-prose ">{event.description}</td>
+      <td className="px-2 border max-w-prose w-28">{event.date.toUTCString().split('00:00:00')[0]?.slice(5)}</td>
+      <td className="px-2 border max-w-prose ">{event.title}</td>
+      <td className="px-2 border max-w-prose ">{event.description}</td>
     </tr>
   );
 }
@@ -78,11 +78,11 @@ const Home: NextPage = () => {
         <div className="flex-1 bg-white">
 
           <div className="flex">
-            <h1 className="font-bold text-2xl mr-auto">Edit and add interesting events in church history</h1>
+            <h1 className="mr-auto text-2xl font-bold">Edit and add interesting events in church history</h1>
             <AuthShowcase />
           </div>
 
-          <form className="flex gap-2 flex-col"
+          <form className="flex flex-col gap-2"
             onSubmit={(e) => {
               e.preventDefault();
               if (!date || !title) return;
@@ -104,15 +104,15 @@ const Home: NextPage = () => {
             <label className="flex flex-col">
               <span>Description</span>
               <textarea rows={3}
-                value={description} onChange={(event) => setDescription(event.target.value)} className="mycool block border border-b-2" />
+                value={description} onChange={(event) => setDescription(event.target.value)} className="block border border-b-2 mycool" />
             </label>
             <div className="flex gap-4">
               <button type="submit"
-                className=" my-4 w-20 px-2 p-1 border bg-green-400">Save</button>
+                className="w-20 p-1 px-2 my-4 bg-green-400 border ">Save</button>
               {eventId && <button onClick={clearForm}
-                className="my-4 w-20 px-2 p-1 border bg-red-400">Cancel</button>}
+                className="w-20 p-1 px-2 my-4 bg-red-400 border">Cancel</button>}
 
-              <label className="flex flex-col align-middle my-4 ml-auto">
+              <label className="flex flex-col my-4 ml-auto align-middle">
                 <span>Filter Month</span>
                 <select value={filterMonth} name='monthFilter' id="monthFilter" onChange={(event) => setFilterMonth(Number(event.target.value))}>
                   <option value="0">None</option>
@@ -146,9 +146,9 @@ const Home: NextPage = () => {
         <table className="w-full ">
           <thead className="">
             <tr className="border border-slate-500 ">
-              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Date</th>
-              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Title</th>
-              <th className="sticky top-0 bg-white drop-shadow-sm pl-2 border text-start">Description</th>
+              <th className="sticky top-0 pl-2 bg-white border drop-shadow-sm text-start">Date</th>
+              <th className="sticky top-0 pl-2 bg-white border drop-shadow-sm text-start">Title</th>
+              <th className="sticky top-0 pl-2 bg-white border drop-shadow-sm text-start">Description</th>
             </tr>
           </thead>
 
@@ -170,7 +170,7 @@ const Home: NextPage = () => {
 
 
         {
-          selectedEvent && <div className="py-4 w-full bg-white flex gap-4 sticky bottom-0">
+          selectedEvent && <div className="sticky bottom-0 flex w-full py-4 bg-white gap-4">
             <button className="w-20 bg-yellow-200 border"
               onClick={() => {
                 if (!selectedEvent) return;
@@ -206,7 +206,7 @@ const AuthShowcase: React.FC = () => {
         </div>
       )}
       <button
-        className="rounded-md border border-indigo-700 bg-indigo-500 px-4 py-2 text-xl shadow-lg text-violet-100 hover:bg-indigo-700"
+        className="px-4 py-2 text-xl bg-indigo-500 border border-indigo-700 shadow-lg rounded-md text-violet-100 hover:bg-indigo-700"
         onClick={sessionData ? () => signOut() : () => signIn()}
       >
         {sessionData ? "Sign out" : "Sign in"}

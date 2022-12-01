@@ -39,21 +39,20 @@ export const HomeScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Ho
   const [month, setMonth] = useState(today.getMonth() + 1);
   const [day, setDay] = useState(today.getDate());
 
-  const changeDateButtonText = `${getMonthName(month)} ${day}`;
+  const changeDateButtonText = `${ getMonthName(month) } ${ day }`;
   const daysInSelectedMonth = getDaysInMonth(new Date(2020, month, 0));
   const eventsQuery = trpc.event.filtered.useQuery({ month, day });
-
 
   return (
     <View>
       <SafeAreaView >
-        <View className="h-full w-full p-4">
-          <Text className="text-2xl font-bold text-center mb-4">
+        <View className="w-full h-full p-4">
+          <Text className="mb-4 text-2xl font-bold text-center">
             This day in Church History
           </Text>
-          <View className="mx-16 border-2 p-2 rounded-3xl bg-blue-400">
+          <View className="p-2 mx-16 bg-blue-400 border-2 rounded-3xl">
             <TouchableOpacity onPress={() => setPickingDate(true)}>
-              <Text className="text-center text-lg text-white">{changeDateButtonText}</Text>
+              <Text className="text-lg text-center text-white">{changeDateButtonText}</Text>
             </TouchableOpacity>
           </View>
 
@@ -61,9 +60,9 @@ export const HomeScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Ho
             <Modal statusBarTranslucent={true} transparent={true} visible={pickingDate} >
               <View className="flex flex-col h-full">
                 <TouchableOpacity className="flex-1 bg-black opacity-50" onPress={() => setPickingDate(false)} />
-                <View className="flex-0 bg-white opacity-100 shadow shadow-black" style={{ shadowRadius: 50 }}>
+                <View className="bg-white shadow opacity-100 flex-0 shadow-black" style={{ shadowRadius: 50 }}>
                   <Picker
-                    className=" border m-3"
+                    className="m-3 border "
                     selectedValue={month}
                     onValueChange={(val, index) => {
                       setMonth(val);
@@ -77,9 +76,9 @@ export const HomeScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Ho
                       setDay(val);
                     }}
                   >
-                    {Array.from(Array(daysInSelectedMonth).keys()).map(i => <Picker.Item key={i + 1} label={`${i + 1}`} value={i + 1} />)}
+                    {Array.from(Array(daysInSelectedMonth).keys()).map(i => <Picker.Item key={i + 1} label={`${ i + 1 }`} value={i + 1} />)}
                   </Picker>
-                  <TouchableOpacity onPress={() => setPickingDate(false)}><Text className="p-4 text-lg font-bold text-white text-center bg-blue-400">set</Text></TouchableOpacity>
+                  <TouchableOpacity onPress={() => setPickingDate(false)}><Text className="p-4 text-lg font-bold text-center text-white bg-blue-400">set</Text></TouchableOpacity>
                 </View>
               </View>
             </Modal>
@@ -92,8 +91,8 @@ export const HomeScreen: React.FC<NativeStackScreenProps<RootStackParamList, 'Ho
                 className="p-2 m-2 border"
                 onPress={() => navigation.navigate('EventDisplay', { event: { ...e, date: e.date.toISOString() } })}
               >
-                <Text className="font-bold text-lg text-center">{`${e.date.getFullYear()} - ${new Date().getFullYear() - e.date.getFullYear()} Years Ago`}</Text>
-                <Text className=" text-center">{e.title}</Text>
+                <Text className="text-lg font-bold text-center">{`${ e.date.getFullYear() } - ${ new Date().getFullYear() - e.date.getFullYear() } Years Ago`}</Text>
+                <Text className="text-center ">{e.title}</Text>
               </TouchableOpacity>
             )}
           </ScrollView>
