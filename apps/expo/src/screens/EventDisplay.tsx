@@ -25,9 +25,9 @@ export const EventDisplay: React.FC<NativeStackScreenProps<RootStackParamList, '
       </View>
 
       <View className="p-2 m-2 border ">
-        <Text className="text-xl font-bold">{event.title}</Text>
-        <Text className="text-gray-500">{date.toDateString()}</Text>
-        <Text>{event.description}</Text>
+        <Text className="text-xl font-bold text-center" >{event.title}</Text>
+        <Text className="text-center text-gray-500">{date.toDateString()}</Text>
+        <Text className="text-base text-justify overflow-ellipsis ">{event.description}</Text>
       </View>
     </ScrollView>
 
