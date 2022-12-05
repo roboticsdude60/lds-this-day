@@ -25,7 +25,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.josephscholl.lds.this.day"
+      "package": "com.josephscholl.lds_this_day"
     },
     "web": {
       "favicon": "./assets/favicon.png"
