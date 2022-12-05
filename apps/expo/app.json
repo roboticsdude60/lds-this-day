@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "LDS This Day",
+    "name": "expo",
     "slug": "expo",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,13 +27,7 @@
       }
     },
     "web": {
-      "favicon": "./assets/favicon.png",
-      "bundler": "metro"
-    },
-    "extra": {
-      "eas": {
-        "projectId": "14269857-d740-4f4b-af02-03a77db2b517"
-      }
+      "favicon": "./assets/favicon.png"
     }
   }
 }

@@ -6,7 +6,6 @@
     "skipLibCheck": true,
     "strict": true,
     "forceConsistentCasingInFileNames": true,
-    "strictNullChecks": true,
     "noEmit": true,
     "esModuleInterop": true,
     "module": "esnext",
@@ -17,5 +16,5 @@
     "incremental": true,
     "noUncheckedIndexedAccess": true
   },
-  "exclude": ["node_modules"]
+  "include": [".eslintrc.cjs"]
 }
