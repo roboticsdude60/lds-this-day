@@ -38,8 +38,6 @@ export const eventRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      console.log("herew++++++++++++++++++");
-      console.log(input.tags);
       const r = await ctx.prisma.interestingEvent.create({
         data: {
           date: input.date,
