@@ -5,14 +5,35 @@ import { trpc } from "../utils/trpc";
 import type { inferProcedureOutput } from "@trpc/server";
 import type { AppRouter } from "@acme/api";
 import { useState } from "react";
+import escapeRegExp from "lodash.escaperegexp";
 
 type InterestingEvent = inferProcedureOutput<AppRouter["event"]["all"]>[number];
+
+const insertHighlights = (text: string, highlight?: string) => {
+  if (highlight === undefined || highlight.length == 0) return text;
+
+  let pattern = new RegExp(escapeRegExp(highlight), 'ig');
+  const arr = text.split(pattern);
+
+  if (arr.length === 0) return text;
+
+  let highlights = Array.from(text.matchAll(pattern));
+  const elements = arr.map((val, index) => {
+    return [
+      <span key={val + 'val'}>{val}</span>,
+      <span key={val + 'highlight'} className="bg-yellow-200">{highlights[index]}</span>
+    ];
+  }).flat();
+  elements.pop();
+  return elements;
+};
 
 const EventRow: React.FC<{
   event: InterestingEvent;
   selected: boolean;
+  searchString?: string;
   selectEvent: (event: InterestingEvent) => void;
-}> = ({ event, selected, selectEvent }) => {
+}> = ({ event, selected, searchString, selectEvent }) => {
   return (
     <tr
       className={`table-row border  border-separate ${ !selected && "hover:bg-slate-200" } ${ selected && "bg-slate-300 hover:bg-slate-400" }`}
@@ -22,8 +43,8 @@ const EventRow: React.FC<{
       }}
     >
       <td className="px-2 border max-w-prose w-28">{event.date.toUTCString().split('00:00:00')[0]?.slice(5)}</td>
-      <td className="px-2 border max-w-prose ">{event.title}</td>
-      <td className="px-2 border max-w-prose ">{event.description}</td>
+      <td className="px-2 border max-w-prose ">{insertHighlights(event.title, searchString)}</td>
+      <td className="px-2 border max-w-prose ">{insertHighlights(event.description, searchString)}</td>
     </tr>
   );
 };
@@ -36,10 +57,11 @@ const Home: NextPage = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState('');
 
+  const [searchString, setSearchString] = useState<string>('');
   const [filterMonth, setFilterMonth] = useState(0);
   const [filterDay, setFilteredDay] = useState(0);
 
-  const eventsQuery = trpc.event.filtered.useQuery({ month: filterMonth, day: filterDay });
+  const eventsQuery = trpc.event.filtered.useQuery({ month: filterMonth, day: filterDay, searchString });
   const addEvent = trpc.event.create.useMutation({
     onSuccess() {
       eventsQuery.refetch();
@@ -99,12 +121,12 @@ const Home: NextPage = () => {
             </label>
             <label className="flex">
               <span className="w-12">Title</span>
-              <input value={title} onChange={(event) => setTitle(event.target.value)} id="titleField" className="flex-1 border border-b-2" type="text" />
+              <input value={title} onChange={(event) => setTitle(event.target.value)} className="flex-1 border border-b-2" type="text" />
             </label>
             <label className="flex flex-col">
               <span>Description</span>
               <textarea rows={3}
-                value={description} onChange={(event) => setDescription(event.target.value)} className="block border border-b-2 mycool" />
+                value={description} onChange={(event) => setDescription(event.target.value)} className="block border border-b-2" />
             </label>
             <div className="flex gap-4">
               <button type="submit"
@@ -112,7 +134,12 @@ const Home: NextPage = () => {
               {eventId && <button onClick={clearForm}
                 className="w-20 p-1 px-2 my-4 bg-red-400 border">Cancel</button>}
 
-              <label className="flex flex-col my-4 ml-auto align-middle">
+              <label className="flex items-center ml-auto align-middle">
+                <span>Simple search</span>
+                <input type="search" value={searchString} onChange={(event) => setSearchString(event.target.value)}
+                  className="px-1.5 py-1 mx-2 rounded outline outline-2 outline-gray-300 focus:outline-blue-500" placeholder="Search" />
+              </label>
+              <label className="flex flex-col my-4 align-middle">
                 <span>Filter Month</span>
                 <select value={filterMonth} name='monthFilter' id="monthFilter" onChange={(event) => setFilterMonth(Number(event.target.value))}>
                   <option value="0">None</option>
@@ -157,7 +184,7 @@ const Home: NextPage = () => {
             <tbody className="">
               {eventsQuery.data?.map((event) => {
                 return (
-                  <EventRow key={event.id} event={event} selected={event === selectedEvent}
+                  <EventRow key={event.id + searchString} event={event} selected={event === selectedEvent} searchString={searchString}
                     selectEvent={(event) => {
                       if (event === selectedEvent) {
                         setSelectedEvent(undefined);

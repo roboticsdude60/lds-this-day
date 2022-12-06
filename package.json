@@ -15,9 +15,11 @@
   },
   "dependencies": {
     "@manypkg/cli": "^0.19.2",
+    "@types/lodash.escaperegexp": "^4.1.7",
     "@typescript-eslint/eslint-plugin": "^5.43.0",
     "@typescript-eslint/parser": "^5.43.0",
     "eslint": "^8.28.0",
+    "lodash.escaperegexp": "^4.1.2",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
     "turbo": "^1.5.5",
