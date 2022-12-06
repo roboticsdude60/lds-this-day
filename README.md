@@ -29,3 +29,8 @@ __There are not yet events in the database for every day of the year. For a more
 
 [Nativewind](https://www.nativewind.dev/)
 
+## Screenshots
+
+![Simulator Screen Shot - iPhone SE (3rd generation) - 2022-12-06 at 16 27 54](https://user-images.githubusercontent.com/24924799/206047485-5bc635c0-925a-4ef5-be47-252f3b5b44fd.png)
+![Simulator Screen Shot - iPhone SE (3rd generation) - 2022-12-06 at 16 29 34](https://user-images.githubusercontent.com/24924799/206047753-830f91d8-3217-4832-89d6-4b1181fa1adb.png)
+![Simulator Screen Shot - iPhone SE (3rd generation) - 2022-12-06 at 16 28 15](https://user-images.githubusercontent.com/24924799/206047766-85b168e8-f6ce-4a2c-8e19-353fa32ea589.png)
