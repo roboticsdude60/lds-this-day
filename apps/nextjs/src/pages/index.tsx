@@ -99,7 +99,7 @@ const Home: NextPage = () => {
 
           <div className="flex">
             <h1 className="mr-auto text-2xl font-bold">Edit and add interesting events in church history</h1>
-            <AuthShowcase />
+            {/* <AuthShowcase /> */}
           </div>
 
           <form className="flex flex-col gap-2"
