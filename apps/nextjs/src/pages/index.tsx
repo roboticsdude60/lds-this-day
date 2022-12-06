@@ -20,8 +20,8 @@ const insertHighlights = (text: string, highlight?: string) => {
   let highlights = Array.from(text.matchAll(pattern));
   const elements = arr.map((val, index) => {
     return [
-      <span key={val + 'val'}>{val}</span>,
-      <span key={val + 'highlight'} className="bg-yellow-200">{highlights[index]}</span>
+      <span key={val + index + 'val'}>{val}</span>,
+      <span key={val + index + 'highlight'} className="bg-yellow-200">{highlights[index]}</span>
     ];
   }).flat();
   elements.pop();
