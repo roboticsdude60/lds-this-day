@@ -18,7 +18,9 @@ const getBaseUrl = () => {
    */
   const localhost = Constants.manifest?.debuggerHost?.split(":")[0];
   if (!localhost)
-    throw new Error("failed to get localhost, configure it manually");
+    // throw new Error("failed to get localhost, configure it manually");
+    // If I'm not running it in dev with expo go, then got to the deployed site
+    return "https://lds-this-day-nextjs.vercel.app/";
   return `http://${ localhost }:3000`;
 };
 
