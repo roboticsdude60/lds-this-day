@@ -13,12 +13,14 @@ export const eventRouter = router({
       z.object({
         month: z.number(),
         day: z.number(),
+        searchString: z.string().optional(),
       })
     )
     .query(({ ctx, input }) => {
       let where = {};
       if (input.month) Object.assign(where, { month: input.month });
       if (input.day) Object.assign(where, { day: input.day });
+      if (!!input.searchString) Object.assign(where, { OR: [{ title: { contains: input.searchString } }, { description: { contains: input.searchString } }] });
 
       return ctx.prisma.interestingEvent.findMany({
         where,
