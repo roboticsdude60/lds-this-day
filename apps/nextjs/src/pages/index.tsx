@@ -85,9 +85,7 @@ const Home: NextPage = () => {
     setDescription('');
     setTitle('');
     setDate('');
-  }
-
-
+  };
 
   return (
     <>
@@ -212,11 +210,14 @@ const Home: NextPage = () => {
           <button className="w-20 bg-red-400 disabled:bg-gray-400" disabled={!selectedEvent} onClick={() => {
             deleteEvent.mutate(selectedEvent?.id ?? '');
           }}>Delete</button>
+          <footer className="flex-1 text-center">
+            ©2022 made with ❤️ by Joseph Scholl <br />
+            <a className="underline" href="https://github.com/roboticsdude60/lds-this-day"
+            >@roboticsdude60/lds-this-day</a>
+          </footer>
         </div>
-
       </main >
-    </>
-  );
+    </>);
 };
 
 export default Home;
