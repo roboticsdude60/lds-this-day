@@ -1,0 +1,248 @@
+-- MySQL dump 10.13  Distrib 8.0.27, for macos11 (arm64)
+--
+-- Host: containers-us-west-84.railway.app    Database: railway
+-- ------------------------------------------------------
+-- Server version	8.0.31
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!50503 SET NAMES utf8mb4 */;
+/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
+/*!40103 SET TIME_ZONE='+00:00' */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+
+--
+-- Table structure for table `Account`
+--
+
+DROP TABLE IF EXISTS `Account`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Account` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `provider` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `providerAccountId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `refresh_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `access_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `expires_at` int DEFAULT NULL,
+  `token_type` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `scope` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `id_token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_state` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Account_provider_providerAccountId_key` (`provider`,`providerAccountId`),
+  KEY `Account_userId_fkey` (`userId`),
+  CONSTRAINT `Account_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Account`
+--
+
+LOCK TABLES `Account` WRITE;
+/*!40000 ALTER TABLE `Account` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Account` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `InterestingEvent`
+--
+
+DROP TABLE IF EXISTS `InterestingEvent`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `InterestingEvent` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `date` date NOT NULL,
+  `month` int NOT NULL,
+  `day` int NOT NULL,
+  `title` tinytext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `InterestingEvent`
+--
+
+LOCK TABLES `InterestingEvent` WRITE;
+/*!40000 ALTER TABLE `InterestingEvent` DISABLE KEYS */;
+INSERT INTO `InterestingEvent` VALUES ('cla9por2a0000ld0853n3zf0g','1805-12-23',12,23,'Joseph Smith Jr. birthday','Sharon, Windsor County, Vermont'),('cla9ppysy0002ld08ts5c786j','1844-06-27',6,27,'Joseph Smith Jr. Death','He was 38 years old.'),('cla9pqkfw0004ld08134zjqai','1806-10-03',10,3,'Oliver Cowdery birthday',''),('cla9ps1800006ld08yjg0ivkk','1850-03-03',3,3,'Oliver Cowdery Death','He was 43 years old.'),('cla9pslfe0008ld0845v4ct4l','1783-05-18',5,18,'Martin Harris birthday',''),('cla9pt9lm000ald08fxdalw1b','1875-07-10',7,10,'Martin Harris Death','He was 92 years old.'),('cla9pto9v000cld08cclwyhaf','1805-01-07',1,7,'David Whitmer birthday',''),('cla9pucey000eld08cc6teg54','1888-01-25',1,25,'David Whitmer Death','He was 83 years old.'),('cla9pvp7n000gld08vexjiu22','1771-07-12',7,12,'Joseph Smith Sr. birthday','Topsfield, Essex County, Massachusetts. Father of the prophet Joseph.'),('cla9pw5tr000ild08dt7m0v4j','1840-09-14',9,14,'Joseph Smith Sr. Death','He was 69 years old.'),('cla9pwxc2000kld08mxwzkgrb','1775-07-08',7,8,'Lucy Mack Smith birthday','Gilsum, Cheshire County, New Hampshire. Mother of the prophet Joseph.'),('cla9pxokp000mld086k0o80e0','1856-05-14',5,14,'Lucy Mack Smith Death','She was 80 years old.'),('cla9py840000old0888pdzego','1804-07-10',7,10,'Emma Hale Smith birthday','Harmony Township, Susquehanna County, Pennsylvania. Wife of the prophet Joseph.'),('cla9pynuj000qld08y6rjvc6e','1879-04-30',4,30,'Emma Hale Smith Death','She was 74 years old.'),('cla9q0tfx000sld087w98h4a8','1820-03-26',3,26,'Possible First Vision Date','Historical evidence suggests that Joseph Smith\'s First Vision could have taken place on this date, which happened to be Easter Sunday that year.'),('clad7irzk0000l808a4baq51d','1830-04-06',4,6,'The Church was Organized','The Church of Jesus Christ of Latter-day Saints (as it is now known) originally went by the name \"Church of Christ\" (and later, the church of the Latter Day Saints) until 1838.'),('clb9k7br90000l808rjedu6s7','1823-11-19',11,19,'Alvin Smith Death','He was 25 years old.'),('clb9kaapc0002l8087kz314rx','1823-09-21',9,21,'Angel Moroni Visits Joseph Smith Jr.','According to the official record, the visitation took place almost the entire night.'),('clb9kbvhz0004l808uu4ekunv','1823-09-22',9,22,'Joseph Smith Jr. Visits Hill Cumorah','On this day in 1823 Joseph Smith had his first visit to the Hill Cumorah where he saw the Gold Plates for the first time. He then returned to the hill on this same day every year for the next four years. At the last of these visits he actually received the plates and was allowed to take them home.'),('clb9kec7d0006l8089iv2p4km','1827-01-18',1,18,'Joseph Smith Marries Emma Hale','They eloped and were married in South Bainbridge, New York.'),('clb9kj3ap000al808inio590o','1829-04-05',4,5,'Oliver Cowdery Arrives in Harmony','On this day, Oliver Cowdery came to Harmony, Pennsylvania, met Joseph Smith for the first time, and prepared to help him translate the Book of Mormon by acting as his scribe.'),('clb9klp4w000cl808k0wbuvi3','1829-05-15',5,15,'Aaronic Priesthood Restored','On this day, John the Baptist (the same figure from the New Testament) visited Joseph Smith and Oliver Cowdery in Harmony, Pennsylvania. He restored the Aaronic Priesthood by ordaining Joseph and Oliver, and commanded them to baptize each other which they did.'),('clb9knwmm000el808llwd58z1','1829-06-11',6,11,'Copyright for the Book of Mormon obtained',''),('clb9kyrwi0000mi080d2nbznz','1829-06-26',6,26,'Title Page of the Book of Mormon first published','On this day, the Book of Mormon title page was published in the Wayne Sentinel, Palmyra, New York, marking the first time any amount of the Book of Mormon text appeared in print.'),('clb9l39r30002mi08v9ppjj88','1829-08-25',8,25,'Martin Harris provides financing for Book of Mormon','On this day, Martin Harris pledged his farm to E. B. Grandin to finance the printing of the Book of Mormon.'),('clb9l5rlz0004mi08pafjozus','1830-03-26',3,26,'Initial Book of Mormon copies become available','On this day, the Wayne Sentinal (Palmyra, NY) announced that the first copies of the Book of Mormon were now available for purchase.'),('clba0yqse0000l008j3xg6qvz','1830-06-09',6,9,'First Church Conference','On this day, the first \"general\" conference of the church was held in Fayette, NY. The \"Articles and Covenants\" of the church (now found in D&C 20) were sustained by the body of the church, and Oliver Cowdery was appointed to keep the church record and conference minutes.'),('clba109hs0002l008jr769dje','1830-06-30',6,30,'Samuel Smith Began Mission','On this day, Samuel Smith, one of the first missionaries of the church, began his mission in various parts of New York.'),('clba14g7s0004l0084gcgjp02','1830-09-26',9,26,'Second Church Conference','On this day, the second \"general\" conference of the church was held in Fayette, NY. In response to the fraudulent \"revelations\" of Hiram Page, Joseph Smith Jr. was appointed to \"receive and write revelations and commandments\" for the church (See D&C 28). David Whitmer was also appointed to keep church records, as Oliver Cowdery and others had been called on a mission to preach the gospel to the \"Lamanites\".'),('clba19rbx0006l008g1wzxci5','1830-12-07',12,7,'D&C 35 Received','On this day, Joseph Smith received the revelation now known as D&C 35 which called Sidney Rigdon to assist Joseph as a scribe on the inspired revision of the King James Bible (now known as the \"Joseph Smith Translation\").'),('clba1aq1y0008l008e9ms36na','1830-12-30',12,30,'D&C 37 Received','On this day, Joseph Smith received the revelation now known as D&C 37 which commanded the saints to gather \"to the Ohio\".'),('clf6cp4xy0000jo08odp1z3x7','1830-04-06',4,6,'D&C 21 received','This revelation was dictated after the meeting during which the church was first organized.'),('clf6crrzi0002jo085sgr6oqn','1830-04-16',4,16,'D&C 22 received','This revelation was featured in the Painesville Telegraph. The date of the dictation comes from the manuscript copy in William E. McLellin\'s handwriting.'),('clf6cvicb0004jo08ps6257cc','1830-11-04',11,4,'D&C 34 received','According to a second-hand account, this revelation was received through Joseph Smith via the seer stone in the hat, similar to the Book of Mormon translation.'),('clf6cxxvb0006jo08v0svww23','1830-12-07',12,7,'D&C 35 received',''),('clf6cyq030008jo086d5ynil2','1830-12-09',12,9,'D&C 36 received',''),('clf6czudw000ajo08dewdx51p','1830-12-30',12,30,'D&C 37 received','This is the revelation that commanded Joseph Smith and the saints to \"go to the Ohio\".'),('clf6d2p3w000cjo08ikcxc5vt','1831-01-02',1,2,'D&C 38 received','In this revelation, the saints are once again told by the Lord to \"go to the Ohio & there I will give unto you my law\" (See D&C 42).'),('clf6d677s000ejo08d6u9bh13','1831-01-05',1,5,'D&C 39 received','This revelation was given to Protestant minister James Covel. In the text, the Lord told him \"arise & be baptized & wash away your sins calling on my name & ye shall receive my spirit & a blessing so great as ye have never known\".'),('clf6d7j26000gjo08px4mreke','1831-01-06',1,6,'D&C 40 received','An epilogue of sorts to the previous revelation, it explained why James Covel had not obeyed the commandments and had left.'),('clf6davlk000ijo08u37jp1hx','1831-02-04',2,4,'D&C 41 received','This revelation was given the day Joseph Smith arrived in Kirtland. It gave directions to him and others such as Sidney Rigdon.'),('clf6dcap5000kjo08onnadjyb','1831-02-09',2,9,'D&C 42:1-72 received','This revelation was known as \"the Law\" which had been promised by the Lord in December 1830 (D&C 37).'),('clf6deg7m000mjo08y02ilgwl','1831-02-23',2,23,'D&C 42:74–93 received','This revelation gives additional directions and clarifications related to the earlier revelation known as \"the Law\", and in our text today is it contained within the same section.'),('clf6dk8b60000mm08527c03zl','1798-02-11',2,11,'Alvin Smith birthday','Tunbridge, Orange County, Vermont. Older brother of the prophet Joseph.'),('clf6dkxyn0002mm08itzqs3wr','1800-02-09',2,9,'Hyrum Smith birthday','Tunbridge, Orange County, Vermont. Older brother of the prophet Joseph.'),('clf6dme5r0004mm08znmgqqnw','1803-05-16',5,16,'Sophronia Smith birthday','Tunbridge, Orange County, Vermont. Older sister of the prophet Joseph.'),('clf6dnnkv0006mm08uc5vzs4c','1808-03-13',3,13,'Samuel Smith birthday','Tunbridge, Orange County, Vermont. Younger brother of the prophet Joseph.'),('clf6doccf0008mm08b4p4pqgy','1810-03-13',3,13,'Ephraim Smith','Royalton, Windsor County, Vermont. Younger brother of the prophet Joseph.'),('clf6dozl9000amm08ru73w2z9','1811-03-13',3,13,'William Smith birthday','Royalton, Windsor County, Vermont. Younger brother of the prophet Joseph.'),('clf6dq0jr000cmm08jyeg0l19','1813-07-28',7,28,'Katharine Smith birthday','Lebanon, Grafton County, New Hampshire. Younger sister of the prophet Joseph.'),('clf6dqn6q000emm081ewycald','1816-03-25',3,25,'Don Carlos Smith birthday','Norwich, Windsor County, Vermont. Younger brother of the prophet Joseph.'),('clf6dr9zk000gmm08peg1ejjk','1821-07-18',7,18,'Lucy Smith birthday','Palmyra, Ontario County, New York. Younger sister of the prophet Joseph.'),('clf6dvbhp000imm08dasfg685','1828-06-15',6,15,'Birth and Death of Joseph and Emma\'s first child','Harmony Township, Susquehanna County, Pennsylvania. This first son of the prophet Joseph and Emma was born and died the same day. The gravestone does not have a name although one source decades later suggested \"Alvin\" might have been it.'),('clf6e07x9000kmm08zor5u2z3','1831-04-30',4,30,'Birth and Death of Joseph and Emma\'s second and third children (twins)','Kirtland, Geauga County, Ohio. Twins, a boy and a girl, were born to the prophet Joseph and Emma and died the same day. Later in life Emma said that the twins had not been named, although a later source suggested they might have been given the name \"Thadeus\" and \"Louisa\".'),('clf6e23i20000mh08bc3g749v','1832-11-06',11,6,'Joseph Smith III birthday','Kirtland, Geauga County, Ohio. Oldest son of the prophet Joseph that survived infancy. Did not remain faithful to the church under Brigham Young and eventually founded the Reorganized Church of Jesus Christ of Latter-day Saints (now known as the Community of Christ).'),('clf6e3ipx0002mh08bepcftt4','1836-06-20',6,20,'Frederick Granger Williams Smith birthday','Kirtland, Geauga County, Ohio. Second oldest son of the prophet Joseph that survived infancy.'),('clf6e48lr0004mh08ngrnc34g','1838-06-02',6,2,'Alexander Hale Smith birthday','Far West, Caldwell County, Missouri. Third oldest son of the prophet Joseph that survived infancy.'),('clf6e65jq0006mh081cddkiy9','1840-06-13',6,13,'Don Carlos Smith birthday','Nauvoo, Hancock County, Illinois. Son of the prophet Joseph. Was given the same name as Joseph Smith\'s younger brother. Only lived just over a year.'),('clf6e7ozc0008mh08roitqunr','1844-11-17',11,17,'David Hyrum Smith birthday','Nauvoo, Hancock County, Illinois. Last son of the prophet Joseph, and was born after Joseph\'s martyrdom in the Carthage jail.');
+/*!40000 ALTER TABLE `InterestingEvent` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Post`
+--
+
+DROP TABLE IF EXISTS `Post`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Post` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Post`
+--
+
+LOCK TABLES `Post` WRITE;
+/*!40000 ALTER TABLE `Post` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Post` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Session`
+--
+
+DROP TABLE IF EXISTS `Session`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Session` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `sessionToken` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `userId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires` datetime(3) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `Session_sessionToken_key` (`sessionToken`),
+  KEY `Session_userId_fkey` (`userId`),
+  CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Session`
+--
+
+LOCK TABLES `Session` WRITE;
+/*!40000 ALTER TABLE `Session` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Session` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `Tag`
+--
+
+DROP TABLE IF EXISTS `Tag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `Tag` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tagName` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `Tag`
+--
+
+LOCK TABLES `Tag` WRITE;
+/*!40000 ALTER TABLE `Tag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `Tag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `User`
+--
+
+DROP TABLE IF EXISTS `User`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `User` (
+  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `email` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `emailVerified` datetime(3) DEFAULT NULL,
+  `image` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `User_email_key` (`email`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `User`
+--
+
+LOCK TABLES `User` WRITE;
+/*!40000 ALTER TABLE `User` DISABLE KEYS */;
+/*!40000 ALTER TABLE `User` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `VerificationToken`
+--
+
+DROP TABLE IF EXISTS `VerificationToken`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `VerificationToken` (
+  `identifier` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expires` datetime(3) NOT NULL,
+  UNIQUE KEY `VerificationToken_token_key` (`token`),
+  UNIQUE KEY `VerificationToken_identifier_token_key` (`identifier`,`token`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `VerificationToken`
+--
+
+LOCK TABLES `VerificationToken` WRITE;
+/*!40000 ALTER TABLE `VerificationToken` DISABLE KEYS */;
+/*!40000 ALTER TABLE `VerificationToken` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `_InterestingEventToTag`
+--
+
+DROP TABLE IF EXISTS `_InterestingEventToTag`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `_InterestingEventToTag` (
+  `A` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `B` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  UNIQUE KEY `_InterestingEventToTag_AB_unique` (`A`,`B`),
+  KEY `_InterestingEventToTag_B_index` (`B`),
+  CONSTRAINT `_InterestingEventToTag_A_fkey` FOREIGN KEY (`A`) REFERENCES `InterestingEvent` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `_InterestingEventToTag_B_fkey` FOREIGN KEY (`B`) REFERENCES `Tag` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `_InterestingEventToTag`
+--
+
+LOCK TABLES `_InterestingEventToTag` WRITE;
+/*!40000 ALTER TABLE `_InterestingEventToTag` DISABLE KEYS */;
+/*!40000 ALTER TABLE `_InterestingEventToTag` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Dumping routines for database 'railway'
+--
+/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
+
+-- Dump completed on 2023-09-30 16:24:50
